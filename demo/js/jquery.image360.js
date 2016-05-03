@@ -30,6 +30,21 @@
 	};
 
 
+	// 插件运行中用到的参数
+	var para = {
+		'imgStr' : '',			// 添加img标签时用到的空字符串
+		'nowPos' : 0,			// 当前鼠标的坐标
+		'pastPos' : 0,			// 上个鼠标的坐标
+		'loadImgNum' : 5,		// 默认预加载图片的个数
+		'timer' : null,			// 插件运行用到的定时器
+		'dir' : 'left',			// 方向保持
+		'touchOff' : false,		// 触摸开关
+		'nowNum' : 1,			// 当前图片的坐标
+		'timerOff' : true,		// 定时器开关
+		'iSwiperSpacing' : 18,  // 单次滑动时,划过像素触发切图动作
+	};
+
+
 	// 插件启动函数
     $.fn.image360 = function (options) {
 
@@ -37,7 +52,9 @@
 		// 设定参数的覆盖顺序
 		var settings = $.extend( {}, defaults, options);
 
-		
+		// 把用户定义的方向传到参数para
+		para.dir = settings.auto.dir;
+
 
 
 
