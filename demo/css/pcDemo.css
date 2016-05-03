@@ -2,3 +2,15 @@
 	margin: 0px;
 	padding: 0px;
 }
+
+.container{
+	width: 80%;
+	margin: 20px auto;
+}
+
+.look{
+	width: 600px;
+	height: 300px;
+	margin: 100px auto;
+	background: #DEDEDE;
+}
