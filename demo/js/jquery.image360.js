@@ -61,8 +61,10 @@
 		// 加载真实的图片
 		addImg : function(that,$nth){
 			var look = that.find('.img360_images img').eq($nth);
-			look.attr('src', look.attr('data-src'));
-			look.removeAttr("data-src");
+			if ( look.attr('src') == '###') {
+				look.attr('src', look.attr('data-src'));
+				look.removeAttr("data-src");
+			}			
 		},
 
 		// 切换图片
@@ -145,14 +147,33 @@
 
 		// 添加鼠标拖拽事件
 		para.ele_float.on('mousedown', function(e){
+			clearInterval(para.timer);
 			para.touchOff = true;
 			para.pastPos = e.originalEvent.x || e.originalEvent.layerX || 0;
 		});
 		para.ele_float.on('mouseup', function(e){
 			para.touchOff = false;
+			if (settings.autoplay) {
+				if (para.timerOff) {
+					para.timerOff = false;
+					clearInterval(para.timer);
+					setTimeout(function(){
+						para.timer = setInterval(function(){
+							methods.changeImg(para.ele_that, para.dir, settings);
+						}, settings.auto.imgtime);
+						para.timerOff = true;
+					}, settings.auto.delaytime);
+				}
+			}
 		});
 
-		para.ele_float.on('mousemove', function(e){
+		
+		$(':root').on('mousemove', function(e){
+			e.preventDefault();
+			if (e.target.className != 'img360_float') {
+				para.touchOff = false;
+				return;
+			}
 			if (para.touchOff) {
 				para.nowPos = e.originalEvent.x || e.originalEvent.layerX || 0;
 				if (para.nowPos - para.pastPos >= para.iSwiperSpacing) {
@@ -167,6 +188,58 @@
 			}
 			
 		});
+
+		// 添加手机端滑动事件
+		para.ele_float.on('touchstart', function(e){
+			clearInterval(para.timer);
+			para.touchOff = true;
+			para.pastPos = e.originalEvent.touches[0].pageX || e.originalEvent.changedTouches[0].pageX;
+		});
+		para.ele_float.on('touchend', function(e){
+			para.touchOff = false;
+			if (settings.autoplay) {
+				if (para.timerOff) {
+					para.timerOff = false;
+					clearInterval(para.timer);
+					setTimeout(function(){
+						para.timer = setInterval(function(){
+							methods.changeImg(para.ele_that, para.dir, settings);
+						}, settings.auto.imgtime);
+						para.timerOff = true;
+					}, settings.auto.delaytime);
+				}
+			}
+		});
+
+		
+		$(':root').on('touchmove', function(e){
+			e.preventDefault();
+			if (e.target.className != 'img360_float') {
+				para.touchOff = false;
+				return;
+			}
+			if (para.touchOff) {
+				para.nowPos = e.originalEvent.touches[0].pageX || e.originalEvent.changedTouches[0].pageX;
+				if (para.nowPos - para.pastPos >= para.iSwiperSpacing) {
+					para.dir = 'right';
+					methods.changeImg(para.ele_that, para.dir, settings);
+					para.pastPos = para.nowPos;
+				}else if(para.nowPos - para.pastPos <= para.iSwiperSpacing*(-1)){
+					para.dir = 'left';
+					methods.changeImg(para.ele_that, para.dir, settings);
+					para.pastPos = para.nowPos;
+				}
+			}
+			
+		});
+
+		// 设定自动旋转
+		if(settings.autoplay){
+			para.timer = setInterval(function(){
+				methods.changeImg(para.ele_that, para.dir, settings);
+			}, settings.auto.imgtime)
+		}
+
 
 		// 返回jquery对象, 保持链式操作
 		return this;
