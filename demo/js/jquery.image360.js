@@ -43,6 +43,23 @@
 			}
 			that.find('.img360_images').html(str);
 		},
+
+		// 先载入一定数量的图片
+		loadAdvance : function(that, nums, loadNums){
+					
+			for(var i = 1; i < loadNums+1; i++) {
+				methods.addImg(that,i);
+				methods.addImg(that,nums-i);
+			};			
+		},
+
+		// 加载真实的图片
+		addImg : function(that,$nth){
+			var look = that.find('.img360_images img').eq($nth);
+			look.attr('src', look.attr('data-src'));
+			look.removeAttr("data-src");
+		},
+		
 	};
 
 	var cssCode = {
@@ -88,7 +105,11 @@
 		// 初始化插件需要的样式设定
 		methods.cssInit(this);
 
-
+		// 先载入预加载的图片
+		methods.loadAdvance(
+			this, 
+			settings.img.num,
+			para.loadImgNum);
 
 
 		// 返回jquery对象, 保持链式操作
