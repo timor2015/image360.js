@@ -31,8 +31,8 @@
 		cssInit : function(that){
 			that.attr('style', cssCode.img360);
 			that.find('.img360_float').attr('style', cssCode.float);
-			that.find('.img360_shelf').attr('style', cssCode.shelf);
-			
+			that.find('.img360_shelf').attr('style', cssCode.shelf);			
+			that.find('.img360_shelf img').attr('style', cssCode.shelf_img);
 		},
 
 		// 向images添加预加载图片
@@ -42,6 +42,7 @@
 				str += '<img data-src="'+ imgPath + imgprefix + i +'.'+ imgtype + '" src="###" style="display:none" />';
 			}
 			that.find('.img360_images').html(str);
+			that.find('.img360_shelf').html('<img src="'+ imgPath + imgprefix + 1 +'.'+ imgtype + '">');
 		},
 
 		// 先载入一定数量的图片
@@ -59,12 +60,15 @@
 			look.attr('src', look.attr('data-src'));
 			look.removeAttr("data-src");
 		},
+
+		// 
 		
 	};
 
 	var cssCode = {
 		'img360' : 'position: relative;',
 		'shelf' : 'width: inherit; height: inherit;',
+		'shelf_img' : 'width: inherit; height:inherit;',
 		'float' : 'position: absolute; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
 	}
 
