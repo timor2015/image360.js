@@ -7,8 +7,9 @@
 
     	// 图片的参数
     	'img' : {
-    		'num' : 48,			// 默认图片的数量
+    		'num' : 48,					// 默认图片的数量
     		'imgpath' : './images', 	// 默认图片的路径
+    		'imgprefix' : '',			// 默认图片名称的前缀
     		'imgsuffix' : 'png',  		// 默认图片的后缀名
     	},
 
@@ -26,8 +27,22 @@
 
 	// 注册用到的函数
 	var methods = {
-
+		// 对插件需要的内容进行CSS初始化设置
+		cssInit : function(that){
+			that.attr('style', cssCode.img360);
+			that.find('.img360_float').attr('style', cssCode.float);
+			that.find('.img360_shelf').attr('style', cssCode.shelf);
+			that.find('.img360_images img').attr('style', cssCode.images);
+			
+		}
 	};
+
+	var cssCode = {
+		'img360' : 'position: relative;',
+		'shelf' : 'width: inherit; height: inherit;',
+		'images' : 'display: none;',
+		'float' : 'position: absolute; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
+	}
 
 
 	// 插件运行中用到的参数
@@ -55,7 +70,8 @@
 		// 把用户定义的方向传到参数para
 		para.dir = settings.auto.dir;
 
-
+		// 初始化插件需要的样式设定
+		methods.cssInit(this);
 
 
 
