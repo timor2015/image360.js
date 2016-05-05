@@ -55,7 +55,6 @@
 				j = j <= 0 ? nums + j : j;
 				methods.addImg(that, k-1);
 				methods.addImg(that, j-1);
-				console.log(k +', ' + j);
 			};			
 		},
 
@@ -88,12 +87,14 @@
 		'img360' : 'position: relative;',
 		'shelf' : 'width: inherit; height: inherit;',
 		'shelf_img' : 'width: inherit; height:inherit;',
-		'float' : 'position: absolute; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
+		'float' : 'position: absolute; cursor: pointer; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
 	}
 
 
 	// 插件运行中用到的参数
 	var para = {
+		'ele_that' : null,		// 快捷对象插件容器
+		'ele_float' : null,		// 快捷对象遮罩层
 		'nowPos' : 0,			// 当前鼠标的坐标
 		'pastPos' : 0,			// 上个鼠标的坐标
 		'loadImgNum' : 5,		// 默认预加载图片的个数
@@ -102,7 +103,7 @@
 		'touchOff' : false,		// 触摸开关
 		'nowNum' : 1,			// 当前图片的坐标
 		'timerOff' : true,		// 定时器开关
-		'iSwiperSpacing' : 18,  // 单次滑动时,划过像素触发切图动作
+		'iSwiperSpacing' : 25,  // 单次滑动时,划过像素触发切图动作
 	};
 
 
@@ -120,8 +121,8 @@
 		// 把用户定义的方向传到参数para
 		para.dir = settings.auto.dir;
 		para.nowNum = settings.img.imginitnum;
-
-		console.log(settings)
+		para.ele_that = this;
+		para.ele_float = this.find('.img360_float');
 
 		// 向images添加预加载图片
 		methods.addImages(
@@ -142,8 +143,30 @@
 			para.loadImgNum, 
 			para.nowNum);
 
-		methods.changeImg(this, 'left', settings);
+		// 添加鼠标拖拽事件
+		para.ele_float.on('mousedown', function(e){
+			para.touchOff = true;
+			para.pastPos = e.originalEvent.x || e.originalEvent.layerX || 0;
+		});
+		para.ele_float.on('mouseup', function(e){
+			para.touchOff = false;
+		});
 
+		para.ele_float.on('mousemove', function(e){
+			if (para.touchOff) {
+				para.nowPos = e.originalEvent.x || e.originalEvent.layerX || 0;
+				if (para.nowPos - para.pastPos >= para.iSwiperSpacing) {
+					para.dir = 'right';
+					methods.changeImg(para.ele_that, para.dir, settings);
+					para.pastPos = para.nowPos;
+				}else if(para.nowPos - para.pastPos <= para.iSwiperSpacing*(-1)){
+					para.dir = 'left';
+					methods.changeImg(para.ele_that, para.dir, settings);
+					para.pastPos = para.nowPos;
+				}
+			}
+			
+		});
 
 		// 返回jquery对象, 保持链式操作
 		return this;
