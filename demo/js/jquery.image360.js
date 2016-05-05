@@ -67,8 +67,19 @@
 		},
 
 		// 切换图片
-		changeImg : function(dir){
-
+		changeImg : function(that, dir, settings){
+			var nextNum = 0;
+			var nextAddImg = 0;
+			if (dir=='left') {
+				nextNum = para.nowNum == 1 ? settings.img.num : para.nowNum - 1;
+				nextAddImg = para.nowNum <= para.loadImgNum ? settings.img.num + para.nowNum - para.loadImgNum - 1 : para.nowNum - para.loadImgNum;
+			}else if(dir=='right'){
+				nextNum = para.nowNum == settings.img.num ? 1 : para.nowNum + 1;
+				nextAddImg = para.nowNum >= settings.img.num - para.loadImgNum ? para.nowNum - settings.img.num - 2 + para.loadImgNum : para.nowNum + 1 + para.loadImgNum;
+			}
+			that.find('.img360_shelf img').attr('src', settings.img.imgpath + settings.img.imgprefix + nextNum +'.'+ settings.img.imgsuffix);
+			methods.addImg(that, nextAddImg-1);
+			para.nowNum = nextNum;
 		},
 		
 	};
@@ -110,6 +121,8 @@
 		para.dir = settings.auto.dir;
 		para.nowNum = settings.img.imginitnum;
 
+		console.log(settings)
+
 		// 向images添加预加载图片
 		methods.addImages(
 			this,
@@ -128,6 +141,8 @@
 			settings.img.num, 
 			para.loadImgNum, 
 			para.nowNum);
+
+		methods.changeImg(this, 'left', settings);
 
 
 		// 返回jquery对象, 保持链式操作
