@@ -32,15 +32,22 @@
 			that.attr('style', cssCode.img360);
 			that.find('.img360_float').attr('style', cssCode.float);
 			that.find('.img360_shelf').attr('style', cssCode.shelf);
-			that.find('.img360_images img').attr('style', cssCode.images);
 			
-		}
+		},
+
+		// 向images添加预加载图片
+		addImages : function(that, nums, imgPath, imgprefix, imgtype){
+			var str = '';
+			for (var i = 1; i < nums+1; i++) {
+				str += '<img data-src="'+ imgPath + imgprefix + i +'.'+ imgtype + '" src="###" style="display:none" />';
+			}
+			that.find('.img360_images').html(str);
+		},
 	};
 
 	var cssCode = {
 		'img360' : 'position: relative;',
 		'shelf' : 'width: inherit; height: inherit;',
-		'images' : 'display: none;',
 		'float' : 'position: absolute; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
 	}
 
@@ -69,6 +76,14 @@
 
 		// 把用户定义的方向传到参数para
 		para.dir = settings.auto.dir;
+
+		// 向images添加预加载图片
+		methods.addImages(
+			this,
+			settings.img.num, 
+			settings.img.imgpath,
+			settings.img.imgprefix, 
+			settings.img.imgsuffix);
 
 		// 初始化插件需要的样式设定
 		methods.cssInit(this);
