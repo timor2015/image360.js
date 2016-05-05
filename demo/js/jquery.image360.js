@@ -11,6 +11,7 @@
     		'imgpath' : './images', 	// 默认图片的路径
     		'imgprefix' : '',			// 默认图片名称的前缀
     		'imgsuffix' : 'png',  		// 默认图片的后缀名
+    		'imginitnum' : 1,			// 插件默认展示的第一张图片坐标
     	},
 
     	// 默认不自动播放
@@ -36,21 +37,25 @@
 		},
 
 		// 向images添加预加载图片
-		addImages : function(that, nums, imgPath, imgprefix, imgtype){
+		addImages : function(that, nums, imgPath, imgprefix, imgtype, nowNum){
 			var str = '';
 			for (var i = 1; i < nums+1; i++) {
 				str += '<img data-src="'+ imgPath + imgprefix + i +'.'+ imgtype + '" src="###" style="display:none" />';
 			}
 			that.find('.img360_images').html(str);
-			that.find('.img360_shelf').html('<img src="'+ imgPath + imgprefix + 1 +'.'+ imgtype + '">');
+			that.find('.img360_shelf').html('<img src="'+ imgPath + imgprefix + nowNum +'.'+ imgtype + '">');
 		},
 
 		// 先载入一定数量的图片
-		loadAdvance : function(that, nums, loadNums){
-					
-			for(var i = 1; i < loadNums+1; i++) {
-				methods.addImg(that,i);
-				methods.addImg(that,nums-i);
+		loadAdvance : function(that, nums, loadNums, nowNum){
+			for(var i = nowNum; i < nowNum+loadNums; i++) {
+				var k = i + 1;
+					j = i - loadNums;
+				k = k > nums ? k-nums : k;
+				j = j <= 0 ? nums + j : j;
+				methods.addImg(that, k-1);
+				methods.addImg(that, j-1);
+				console.log(k +', ' + j);
 			};			
 		},
 
@@ -61,7 +66,10 @@
 			look.removeAttr("data-src");
 		},
 
-		// 
+		// 切换图片
+		changeImg : function(dir){
+
+		},
 		
 	};
 
@@ -75,7 +83,6 @@
 
 	// 插件运行中用到的参数
 	var para = {
-		'imgStr' : '',			// 添加img标签时用到的空字符串
 		'nowPos' : 0,			// 当前鼠标的坐标
 		'pastPos' : 0,			// 上个鼠标的坐标
 		'loadImgNum' : 5,		// 默认预加载图片的个数
@@ -92,11 +99,16 @@
     $.fn.image360 = function (options) {
 
     	
-		// 设定参数的覆盖顺序
+		// 设定参数的覆盖顺序()
 		var settings = $.extend( {}, defaults, options);
+		var setimg = $.extend(defaults.img, options.img);
+		var setauto = $.extend(defaults.auto, options.auto);
+		settings.img = setimg;
+		settings.auto = setauto;
 
 		// 把用户定义的方向传到参数para
 		para.dir = settings.auto.dir;
+		para.nowNum = settings.img.imginitnum;
 
 		// 向images添加预加载图片
 		methods.addImages(
@@ -104,7 +116,8 @@
 			settings.img.num, 
 			settings.img.imgpath,
 			settings.img.imgprefix, 
-			settings.img.imgsuffix);
+			settings.img.imgsuffix,
+			para.nowNum);
 
 		// 初始化插件需要的样式设定
 		methods.cssInit(this);
@@ -112,8 +125,9 @@
 		// 先载入预加载的图片
 		methods.loadAdvance(
 			this, 
-			settings.img.num,
-			para.loadImgNum);
+			settings.img.num, 
+			para.loadImgNum, 
+			para.nowNum);
 
 
 		// 返回jquery对象, 保持链式操作
