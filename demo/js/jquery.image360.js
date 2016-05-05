@@ -89,7 +89,7 @@
 		'img360' : 'position: relative;',
 		'shelf' : 'width: inherit; height: inherit;',
 		'shelf_img' : 'width: inherit; height:inherit;',
-		'float' : 'position: absolute; cursor: pointer; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
+		'float' : 'position: absolute; cursor: move; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
 	}
 
 
@@ -105,7 +105,7 @@
 		'touchOff' : false,		// 触摸开关
 		'nowNum' : 1,			// 当前图片的坐标
 		'timerOff' : true,		// 定时器开关
-		'iSwiperSpacing' : 25,  // 单次滑动时,划过像素触发切图动作
+		'iSwiperSpacing' : 20,  // 单次滑动时,划过像素触发切图动作
 	};
 
 
