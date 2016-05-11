@@ -99,7 +99,7 @@
 		'ele_float' : null,		// 快捷对象遮罩层
 		'nowPos' : 0,			// 当前鼠标的坐标
 		'pastPos' : 0,			// 上个鼠标的坐标
-		'loadImgNum' : 5,		// 默认预加载图片的个数
+		'loadImgNum' : 3,		// 默认预加载图片的个数
 		'timer' : null,			// 插件运行用到的定时器
 		'dir' : 'left',			// 方向保持
 		'touchOff' : false,		// 触摸开关
@@ -240,6 +240,7 @@
 			}, settings.auto.imgtime)
 		}
 
+		console.log(settings);
 
 		// 返回jquery对象, 保持链式操作
 		return this;
