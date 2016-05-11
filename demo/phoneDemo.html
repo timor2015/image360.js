@@ -2,9 +2,49 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 	<title>image360.js-phoneDemo</title>
+<link rel="stylesheet" href="./css/phoneDemo.css">
 </head>
 <body>
-	
+	<div class="container">
+		<h1>360度物品展示演示:</h1>
+		<p>jquery.image360.js</p>
+		<br>
+		<hr/>
+		<div class="look">
+			<div id="img360">
+				<div class="img360_shelf"></div>
+				<div class="img360_images"></div>
+				<div class="img360_float"></div>
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript" src="./js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="./js/jquery.image360.js"></script>
+<script>
+
+// js 代码处
+
+
+$('#img360').image360({
+	img : {
+		'num' : 48,
+		'imgpath' : './images/',
+		'imgsuffix' : 'png',
+		'imginitnum' : 8
+	}, 
+	'autoplay' : false,
+	'auto' : {
+		'imgtime' : 300,
+		'imgdelay' : 3000
+	}
+});
+
+
+
+</script>
+
 </body>
 </html>

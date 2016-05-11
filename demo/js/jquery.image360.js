@@ -11,7 +11,7 @@
     		'imgpath' : './images', 	// 默认图片的路径
     		'imgprefix' : '',			// 默认图片名称的前缀
     		'imgsuffix' : 'png',  		// 默认图片的后缀名
-    		'imginitnum' : 1,			// 插件默认展示的第一张图片坐标
+    		'imginitnum' : 1			// 插件默认展示的第一张图片坐标
     	},
 
     	// 默认不自动播放
@@ -89,7 +89,7 @@
 		'img360' : 'position: relative;',
 		'shelf' : 'width: inherit; height: inherit;',
 		'shelf_img' : 'width: inherit; height:inherit;',
-		'float' : 'position: absolute; cursor: pointer; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
+		'float' : 'background:#fff; opacity:0; filter:alpha(opacity=0); position: absolute; cursor: move; left: 0px; top: 0px; z-index:2; width: inherit; height: inherit;',
 	}
 
 
